@@ -10,10 +10,13 @@ app.get("/", function (req, res) {
 });
 
 app.get("/results", function(req, res) {
-    request("http://www.omdbapi.com/?s=oklahoma&apikey=808af347", function (error, response, body) {
+  var query = req.query.search;
+  console.log(query);
+  var url = "http://www.omdbapi.com/?s=" + query;
+    request(url+"&apikey=808af347", function (error, response, body) {
         if (!error && response.statusCode === 200) {
-            var parsedData = JSON.parse(body);
-            res.send(parsedData["Search"][0]["Title"]);
+            var data = JSON.parse(body);
+            res.render("results", {data: data});
         }
     });
 });
